@@ -50,6 +50,25 @@
 
 ---
 
+
+### Objective 5
+
+**Optimize the companies that you want to apply in the future create practical urls.
+
+**Key Results:**
+
+* KR 5.1: For the next 20 target companies, create and document a custom tracking URL (for example your personal portfolio → company-specific landing page) by the end of the quarter.
+
+* KR 5.2: Achieve at least 80% … i.e., 16 out of 20 of these URLs working correctly (i.e., they resolve, load the correct content, and are logged for tracking).
+
+* KR 5.3: Use the URLs in job-applications or outreach and track at least 50 clicks or visits via those URLs across all companies within one month of usage.
+
+* KR 5.4: Gather feedback or identify at least 5 actionable insights from the URL performance (e.g., which companies viewed your portfolio, what content was clicked most) and adjust your next batch of target-company URLs accordingly.
+
+* KR 5.5: Increase your response rate (interviews or meaningful engagements) from outreach that uses the custom URLs by 10% compared to outreach without them.
+
+---
+
 ### Implementation Notes & Tips for LinkedIn Focus
 
 * **Post format**: On LinkedIn, upload the video *natively* if possible—not just the YouTube link. Native LinkedIn video performs better because it auto-plays and retains audience on platform. ([Social Media Dashboard][1])
