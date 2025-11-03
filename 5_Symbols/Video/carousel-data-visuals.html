@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization</title>
+    <style>
+        /* This @property rule is the magic. 
+          It tells the browser we want to animate a custom
+          property '--p' (percentage) for our gradient.
+        */
+        @property --p {
+          syntax: '<percentage>';
+          inherits: false;
+          initial-value: 100%;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* 1. The Counter */
+        .counter-group {
+            text-align: center;
+            opacity: 0; /* Starts hidden */
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .counter-group.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        #app-counter {
+            font-size: 10vw;
+            font-weight: bold;
+            color: #333;
+        }
+        .counter-label {
+            font-size: 2.5vw;
+            color: #555;
+        }
+
+        /* 2. The Pie Chart */
+        .pie-chart-group {
+            text-align: center;
+            opacity: 0; /* Starts hidden */
+            transform: scale(0.5);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .pie-chart-group.animate {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #time-chart {
+            width: 15vw;
+            height: 15vw;
+            border-radius: 50%;
+            margin: 10px auto;
+            
+            /* Initial state: 100% "bad" color (red)
+              The pie chart morphs by animating --p
+            */
+            background: conic-gradient(
+                #f8d7da var(--p), /* "Wasted Time" color */
+                #d4edda 0       /* "Saved Time" color */
+            );
+        }
+        
+        /* The morphing animation */
+        #time-chart.animate {
+            /* We animate --p from 100% down to 5% (2 / 40) */
+            animation: morph-pie 1.5s ease-out forwards;
+        }
+
+        .chart-label {
+            font-size: 2vw;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* 3. The Hook Text */
+        .hook-text {
+            font-size: 3vw;
+            font-weight: bold;
+            text-align: center;
+            padding: 1rem;
+            opacity: 0; /* Starts hidden */
+            transform: translateY(20px);
+            
+            /* Set transition to happen AFTER pie morph */
+            transition: opacity 0.5s ease 0.5s, transform 0.5s ease 0.5s;
+        }
+        .hook-text.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* --- Keyframes --- */
+        @keyframes morph-pie {
+            from {
+                --p: 100%; /* 40 of 40 hours */
+            }
+            to {
+                --p: 5%;   /* 2 of 40 hours */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="counter-group" id="counter-group">
+            <div id="app-counter">0</div>
+            <div class="counter-label">Applications Sent</div>
+        </div>
+
+        <div class="pie-chart-group" id="pie-group">
+            <div class="chart-label">Time Spent: 40hrs ➔ 2hrs</div>
+            <div id="time-chart"></div>
+        </div>
+
+        <h2 class="hook-text" id="hook">
+            I automated 100 job applications in 2 hours using ChatGPT
+        </h2>
+
+    </div>
+
+    <script>
+        // Wait for the page to load to start the sequence
+        window.addEventListener('DOMContentLoaded', () => {
+            
+            // Get all the elements
+            const counterEl = document.getElementById('app-counter');
+            const pieEl = document.getElementById('time-chart');
+            const hookEl = document.getElementById('hook');
+            
+            const counterGroup = document.getElementById('counter-group');
+            const pieGroup = document.getElementById('pie-group');
+
+            // --- Phase 1: The Counter (0s - 2s) ---
+            counterGroup.classList.add('animate'); // Fade in counter
+            
+            let start = 0;
+            const end = 100;
+            const duration = 2000; // 2 seconds
+            const increment = end / (duration / 16); // Calculate increment per frame
+            
+            const runCounter = () => {
+                start += increment;
+                if (start > end) {
+                    start = end;
+                }
+                counterEl.innerText = Math.floor(start);
+                
+                if (start < end) {
+                    requestAnimationFrame(runCounter);
+                } else {
+                    // --- Phase 2: The Pie Chart (Starts at 2s) ---
+                    // Run this code *after* the counter finishes
+                    setTimeout(() => {
+                        pieGroup.classList.add('animate'); // Fade in pie group
+                        pieEl.classList.add('animate'); // Start morphing animation
+                    }, 100); // 100ms buffer
+                    
+                    // --- Phase 3: The Hook Text (Starts at 3.5s) ---
+                    // Pie animation is 1.5s long (2s + 1.5s = 3.5s total)
+                    setTimeout(() => {
+                        hookEl.classList.add('animate'); // Fade in hook text
+                    }, 1600); // 100ms + 1500ms pie animation
+                }
+            };
+            
+            // Start the whole sequence
+            runCounter();
+        });
+    </script>
+
+</body>
+</html>
